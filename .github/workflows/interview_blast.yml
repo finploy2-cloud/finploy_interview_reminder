@@ -1,0 +1,32 @@
+name: Daily Interview Blast
+
+on:
+  schedule:
+    - cron: "30 11 * * *"   # 5:00 PM IST
+  workflow_dispatch:
+
+jobs:
+  run-blast:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create finploy_env.json
+        env:
+          DATA: ${{ secrets.FINPLOY_ENV }}
+        run: |
+          echo "$DATA" > finploy_env.json
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install pandas gspread google-auth requests openpyxl
+
+      - name: Run script
+        run: python single_script.py
