@@ -9,7 +9,7 @@ This repository contains a fully cloud-automated workflow that:
 - Requires zero manual effort once deployed
 
 ---
-
+'''bash
 ## 📌 Project Structure
 
 finploy_interview_reminder/
@@ -19,6 +19,7 @@ finploy_interview_reminder/
 └── .github/
 └── workflows/
 └── interview_blast.yml # GitHub Actions workflow
+'''
 
 
 ---
