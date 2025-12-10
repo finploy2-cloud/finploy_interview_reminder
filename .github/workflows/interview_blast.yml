@@ -1,7 +1,7 @@
 name: Daily Interview Blast
 
 on:
-  # Run every hour so GitHub can't skip the job due to UTC shifts
+  # Run every hour; Python will only actually execute at 12:00 UTC (5:30 PM IST)
   schedule:
     - cron: "0 * * * *"
   workflow_dispatch:
@@ -29,12 +29,12 @@ jobs:
         run: |
           pip install pandas gspread google-auth requests openpyxl
 
-      - name: Print UTC Time (Debug)
+      - name: Print UTC time (debug)
         run: |
           echo "Current UTC Time:"
           date -u
 
-      - name: Run script (Only at 11 UTC)
+      - name: Run script (only at 12:00 UTC = 5:30 PM IST)
         run: |
           python3 - << 'EOF'
           import datetime, subprocess, sys
@@ -42,11 +42,11 @@ jobs:
           now = datetime.datetime.utcnow()
           print("UTC TIME:", now)
 
-          # Only run script if 11:00–11:59 UTC  (5 PM IST)
-          if now.hour != 11:
-              print("⏭ Skipping run — not the scheduled UTC hour.")
+          # 12:00–12:59 UTC == 5:30–6:29 PM IST
+          if now.hour != 12:
+              print("⏭ Skipping run — not the 12:00 UTC (5:30 PM IST) window.")
               sys.exit(0)
 
-          print("✔ Correct UTC hour — executing script...")
+          print("✔ In 5:30 PM IST window — running single_script.py ...")
           subprocess.run(["python3", "single_script.py"], check=True)
           EOF
