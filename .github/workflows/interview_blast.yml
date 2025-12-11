@@ -1,9 +1,8 @@
 name: Daily Interview Blast
 
 on:
-  # Run every hour; Python will only actually execute at 12:00 UTC (5:30 PM IST)
   schedule:
-    - cron: "0 * * * *"
+    - cron: "0 12 * * *"   # Runs every day at 5:30 PM IST
   workflow_dispatch:
 
 jobs:
@@ -34,19 +33,7 @@ jobs:
           echo "Current UTC Time:"
           date -u
 
-      - name: Run script (only at 12:00 UTC = 5:30 PM IST)
+      - name: Run script
         run: |
-          python3 - << 'EOF'
-          import datetime, subprocess, sys
-
-          now = datetime.datetime.utcnow()
-          print("UTC TIME:", now)
-
-          # 12:00–12:59 UTC == 5:30–6:29 PM IST
-          if now.hour != 12:
-              print("⏭ Skipping run — not the 12:00 UTC (5:30 PM IST) window.")
-              sys.exit(0)
-
-          print("✔ In 5:30 PM IST window — running single_script.py ...")
-          subprocess.run(["python3", "single_script.py"], check=True)
-          EOF
+          echo "Running single_script.py at 5:30 PM IST (12:00 UTC)"
+          python3 single_script.py
